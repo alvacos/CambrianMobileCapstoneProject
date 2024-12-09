@@ -17,6 +17,16 @@
                    FontSize="24"
                    FontAttributes="Bold"
                    HorizontalOptions="Center" />
+            <Label
+                Text="the place helping you keep track of your expense!!"
+                FontSize="14"
+                Style="{StaticResource SubHeadline}"
+                SemanticProperties.HeadingLevel="Level2"/>
+            <Image
+                Source="pic.jpg"
+                HeightRequest="300"
+                WidthRequest="300"
+                Aspect="AspectFit"/>
 
             <!-- List of Expenses -->
             <ListView x:Name="ExpensesListView"
