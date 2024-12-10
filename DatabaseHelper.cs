@@ -114,7 +114,7 @@ namespace CambrianMobileCapstoneProject
                 return result;
             }
             catch (Exception ex)
-            {n
+            {
                 Console.WriteLine($"DeleteExpense error: {ex.Message}");
                 return -1; // Indicate failure
             }
