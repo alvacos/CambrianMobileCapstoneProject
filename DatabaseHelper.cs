@@ -47,26 +47,17 @@ namespace CambrianMobileCapstoneProject
         {
             try
             {
-                // Log the database path
-                Console.WriteLine($"Database Path: {DatabasePath}");
+                // Create the connection to the SQLite database
+                conn = new SQLiteConnection($"Data Source={DatabasePath}");
 
-                // Initialize the connection
-                conn = new SQLiteConnection(DatabasePath);
-
-                // Create the table
-                conn.CreateTable<Expense>();
+            // Create the ExpensesTracker table
+            conn.CreateTable<Expense>();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Database initialization failed: {ex.Message}");
                 throw; // Rethrow the exception for debugging purposes
             }
-
-            //// Create the connection to the SQLite database
-            //conn = new SQLiteConnection($"Data Source={DatabasePath}");
-
-            //// Create the ExpensesTracker table
-            //conn.CreateTable<Expense>();
         }
 
         // Add a new expense tracker to the database
@@ -74,15 +65,14 @@ namespace CambrianMobileCapstoneProject
         {
             try
             {
-                return conn.Insert(expense);
+                int result = conn.Insert(expense);
+                return result;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"AddNewExpense error: {ex.Message}");
                 return -1; // Indicate failure
             }
-            //int result = conn.Insert(expense);
-            //return result;
         }
 
         // Get all expenses tracker from the database
@@ -90,15 +80,14 @@ namespace CambrianMobileCapstoneProject
         {
             try
             {
-                return conn.Table<Expense>().ToList();
+                List<Expense> expenses = conn.Table<Expense>().ToList();
+                return expenses;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"GetAllExpensesTracker error: {ex.Message}");
                 return new List<Expense>(); // Return empty list on failure
             }
-            //List<Expense> expenses = conn.Table<Expense>().ToList();
-            //return expenses;
         }
 
         // Update an expense tracker in the database
@@ -106,15 +95,14 @@ namespace CambrianMobileCapstoneProject
         {
             try
             {
-                return conn.Update(expense);
+                int result = conn.Update(expense); // Use Update instead of Insert
+                return result;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"UpdateExpense error: {ex.Message}");
                 return -1; // Indicate failure
             }
-            //int result = conn.Update(expense); // Use Update instead of Insert
-            //return result;
         }
 
         // Delete an expense tracker from the database
@@ -122,15 +110,14 @@ namespace CambrianMobileCapstoneProject
         {
             try
             {
-                return conn.Delete(expense);
+                int result = conn.Delete(expense);
+                return result;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"DeleteExpense error: {ex.Message}");
                 return -1; // Indicate failure
             }
-            //int result = conn.Delete(expense);
-            //return result;
         }
     }
 }
