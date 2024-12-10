@@ -1,0 +1,12 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CambrianMobileCapstoneProject.AddExpensePage">
+    <VerticalStackLayout Padding="20">
+        <Label Text="Add New Expense" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+        <Entry Text="{Binding NewExpense.Name}" Placeholder="Enter expense name" />
+        <Entry Text="{Binding NewExpense.Category}" Placeholder="Enter category" />
+        <Entry Text="{Binding NewExpense.Amount}" Placeholder="Enter amount" Keyboard="Numeric" />
+        <DatePicker Date="{Binding NewExpense.Date}" />
+        <Button Text="Save" Command="{Binding SaveExpenseCommand}" />
+    </VerticalStackLayout>
+</ContentPage>

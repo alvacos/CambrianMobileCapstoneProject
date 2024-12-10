@@ -6,29 +6,56 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using CambrianMobileCapstoneProject.Model; // Add this using statement to access the ExpenseManager class
 
 namespace CambrianMobileCapstoneProject.ViewModel
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
         private readonly DatabaseHelper _databaseHelper;
+        private readonly ExpenseManager _expenseManager;
+
+        public ICommand NavigateToAddExpenseCommand { get; }
 
         public MainPageViewModel()
         {
             _databaseHelper = new DatabaseHelper();
+            _expenseManager = new ExpenseManager();
             LoadExpenses();
 
             // Initialize commands
             AddExpenseCommand = new Command(OnAddExpense);
             EditExpenseCommand = new Command(OnEditExpense, () => IsExpenseSelected);
             DeleteExpenseCommand = new Command(OnDeleteExpense, () => IsExpenseSelected);
+
+            NavigateToAddExpenseCommand = new Command(NavigateToAddExpense);
+        }
+
+        private async void NavigateToAddExpense()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new AddExpensePage());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Auto-implemented properties
-        public Expense SelectedExpense { get; set; }
-        public List<Expense> Expenses { get; set; } = new List<Expense>();
+        public Expense SelectedExpense{
+            get => _expenseManager.SelectedExpense;
+            set
+            {
+                _expenseManager.SelectedExpense = value;
+                OnPropertyChanged();
+            }
+        }
+        public List<Expense> Expenses
+        {
+            get => _expenseManager.Expenses;
+            set
+            {
+                _expenseManager.Expenses = value;
+                OnPropertyChanged();
+            }
+        }
         public ICommand AddExpenseCommand { get; }
         public ICommand EditExpenseCommand { get; }
         public ICommand DeleteExpenseCommand { get; }
@@ -39,8 +66,7 @@ namespace CambrianMobileCapstoneProject.ViewModel
         // Method to load expenses from the database
         private void LoadExpenses()
         {
-            Expenses = _databaseHelper.GetAllExpensesTracker();
-            OnPropertyChanged(nameof(Expenses));
+            Expenses = _databaseHelper.GetAllExpensesTracker();           
         }
 
         // Add expense method
@@ -82,7 +108,7 @@ namespace CambrianMobileCapstoneProject.ViewModel
         }
 
         // Notify property change
-        private void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

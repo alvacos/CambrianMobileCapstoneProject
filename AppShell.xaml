@@ -12,4 +12,8 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
+    <ShellContent 
+        Title="Add Expense" 
+        ContentTemplate="{DataTemplate local:AddExpensePage}" />
+
 </Shell>
