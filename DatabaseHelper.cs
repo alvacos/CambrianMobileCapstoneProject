@@ -48,10 +48,10 @@ namespace CambrianMobileCapstoneProject
             try
             {
                 // Create the connection to the SQLite database
-                conn = new SQLiteConnection($"Data Source={DatabasePath}");
+                conn = new SQLiteConnection(DatabasePath);
 
-            // Create the ExpensesTracker table
-            conn.CreateTable<Expense>();
+                // Create the ExpensesTracker table
+                conn.CreateTable<Expense>();
             }
             catch (Exception ex)
             {
@@ -114,7 +114,7 @@ namespace CambrianMobileCapstoneProject
                 return result;
             }
             catch (Exception ex)
-            {
+            {n
                 Console.WriteLine($"DeleteExpense error: {ex.Message}");
                 return -1; // Indicate failure
             }
