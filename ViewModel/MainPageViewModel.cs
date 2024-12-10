@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CambrianMobileCapstoneProject.Model; // Add this using statement to access the ExpenseManager class
+using CambrianMobileCapstoneProject.Services; // Add this using statement to access the QuoteService class
 
 namespace CambrianMobileCapstoneProject.ViewModel
 {
@@ -14,6 +15,7 @@ namespace CambrianMobileCapstoneProject.ViewModel
     {
         private readonly DatabaseHelper _databaseHelper;
         private readonly ExpenseManager _expenseManager;
+        private readonly QuoteService _quoteService;
 
         public ICommand NavigateToAddExpenseCommand { get; }
 
@@ -21,12 +23,15 @@ namespace CambrianMobileCapstoneProject.ViewModel
         {
             _databaseHelper = new DatabaseHelper();
             _expenseManager = new ExpenseManager();
+            _quoteService = new QuoteService();
+            LoadQuote();
             LoadExpenses();
 
             // Initialize commands
             AddExpenseCommand = new Command(OnAddExpense);
             EditExpenseCommand = new Command(OnEditExpense, () => IsExpenseSelected);
             DeleteExpenseCommand = new Command(OnDeleteExpense, () => IsExpenseSelected);
+            RefreshQuoteCommand = new Command(async () => await LoadQuote());
 
             NavigateToAddExpenseCommand = new Command(NavigateToAddExpense);
         }
@@ -56,6 +61,18 @@ namespace CambrianMobileCapstoneProject.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private string _quote;
+        public string Quote
+        {
+            get => _quote;
+            set
+            {
+                _quote = value;
+                OnPropertyChanged();
+            }
+        }
+        public ICommand RefreshQuoteCommand { get; }
         public ICommand AddExpenseCommand { get; }
         public ICommand EditExpenseCommand { get; }
         public ICommand DeleteExpenseCommand { get; }
@@ -67,6 +84,10 @@ namespace CambrianMobileCapstoneProject.ViewModel
         private void LoadExpenses()
         {
             Expenses = _databaseHelper.GetAllExpensesTracker();           
+        }
+        private async Task LoadQuote()
+        {
+            Quote = await _quoteService.GetRandomQuoteAsync();
         }
 
         // Add expense method
@@ -108,7 +129,12 @@ namespace CambrianMobileCapstoneProject.ViewModel
         }
 
         // Notify property change
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
