@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CambrianMobileCapstoneProject.DetailPage"
+             xmlns:viewmodel="clr-namespace:CambrianMobileCapstoneProject.ViewModel"
+             x:DataType="viewmodel:DetailViewModel"
+             Title="DetailPage">
+    <StackLayout Padding="20">
+        <Entry
+            Placeholder="Name" 
+            Text="{Binding Expense.Name}}"/>
+
+        <Entry
+            Placeholder="Category" 
+            Text="{Binding Expense.Category}}"/>
+
+        <Entry
+            Placeholder="Date" 
+            Text="{Binding Expense.Date}}"/>
+
+        <Entry
+            Placeholder="Amount" 
+            Text="{Binding Expense.Amount}}"/>
+
+        <Button 
+            Text="Save and Go Back"
+            Command="{Binding GoBackCommand}"
+            HorizontalOptions="Center" />
+    </StackLayout>
+</ContentPage>
