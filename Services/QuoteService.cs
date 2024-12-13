@@ -12,7 +12,7 @@ namespace CambrianMobileCapstoneProject.Services
 
     public class QuoteService
     {
-        private const string ApiUrl = "https://api.quotable.io/random";
+        private const string ApiUrl = "http://api.quotable.io/random";
         private readonly HttpClient _httpClient;
 
         public QuoteService()
@@ -22,15 +22,21 @@ namespace CambrianMobileCapstoneProject.Services
 
         public async Task<string> GetRandomQuoteAsync()
         {
+            
             try
             {
                 var response = await _httpClient.GetStringAsync(ApiUrl);
                 var quoteData = JsonSerializer.Deserialize<QuoteModel>(response);
                 return quoteData?.Content ?? "Stay motivated!";
             }
-            catch
+            catch (HttpRequestException e)
             {
-                return "Unable to fetch a quote at this moment. Please try again.";
+                Console.WriteLine(e.Message);
+                return $"Error fetching quote: {e.Message}";
+            }
+            catch (Exception e)
+            {
+                return $"An unexpected error occurred: {e.Message}";
             }
         }
 
